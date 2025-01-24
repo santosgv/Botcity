@@ -53,7 +53,7 @@ def logar_benner(self):
         
         bot.paste("vitorgomes")
         bot.tab()
-        bot.paste("shutdown")
+        bot.paste("1233123")
         bot.enter()
 
 def cria_coleta(self):
@@ -179,8 +179,8 @@ def cria_viagem(self):
 
 class Bot(DesktopBot):
     def action(self, execution=None):
-        Acessar_benner(self)
-        #logar_benner(self)
+        #Acessar_benner(self)
+        logar_benner(self)
         #cria_coleta(self)
         #cria_viagem(self)
         pass

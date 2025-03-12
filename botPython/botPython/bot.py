@@ -1,5 +1,7 @@
 
 from botcity.core import DesktopBot
+from decouple import config
+from datetime import datetime,timedelta,date
 import time
 
 
@@ -15,7 +17,7 @@ def Acessar_benner(self):
     if not self.find( "maximizar", matching=0.97, waiting_time=10000):
         self.not_found("maximizar")
     self.click()
-    time.sleep(10)
+    time.sleep(15)
 
     if not self.find( "clicl", matching=0.97, waiting_time=10000):
         self.not_found("clicl")
@@ -41,19 +43,19 @@ def Acessar_benner(self):
     self.click_relative(29, 39)
         
 
-    bot.paste("953820Senha@")
+    bot.paste(config('SENHA'))
     bot.enter()
         
 def logar_benner(self):
         bot = DesktopBot()
-        time.sleep(30)
+        time.sleep(15)
         if not self.find( "usuario_benner", matching=0.97, waiting_time=10000):
             self.not_found("usuario_benner")
         self.click()
         
-        bot.paste("vitorgomes")
+        bot.paste(config("LOGIN_BENNER"))
         bot.tab()
-        bot.paste("1233123")
+        bot.paste(config('SENHA_BENNER'))
         bot.enter()
 
 def cria_coleta(self):
@@ -90,16 +92,18 @@ def cria_coleta(self):
         self.not_found("datasolicitacao")
     self.click_relative(10, 25)
     
+    dataatual =datetime.today()
+    data_futura = dataatual + timedelta(days=1)
     
-    bot.paste("23012025")
+    bot.paste(dataatual.strftime('%d/%m/%Y'))
     bot.enter()
     bot.paste("1930")
     bot.tab()
-    bot.paste("25012025")
-    bot.enter()
+    bot.paste(dataatual.strftime('%d/%m/%Y'))
+    bot.tab()
     bot.paste("1820")
     bot.tab()
-    bot.paste("26012025")
+    bot.paste(data_futura.strftime('%d/%m/%Y'))
     bot.enter()
     bot.paste("1820")
     
@@ -177,13 +181,16 @@ def cria_viagem(self):
     self.click()
     
 
+
 class Bot(DesktopBot):
     def action(self, execution=None):
         #Acessar_benner(self)
-        logar_benner(self)
-        #cria_coleta(self)
+        #logar_benner(self)
+        cria_coleta(self)
         #cria_viagem(self)
+ 
         pass
+        
 
     def not_found(self, label):
         print(f"Element not found: {label}")
@@ -191,6 +198,7 @@ class Bot(DesktopBot):
 
 if __name__ == '__main__':
     Bot.main()
+
 
 
 

@@ -101,11 +101,11 @@ def cria_coleta(self):
     bot.tab()
     bot.paste(dataatual.strftime('%d/%m/%Y'))
     bot.tab()
-    bot.paste("1820")
+    bot.paste("1930")
     bot.tab()
     bot.paste(data_futura.strftime('%d/%m/%Y'))
     bot.enter()
-    bot.paste("1820")
+    bot.paste("1930")
     
     if not self.find( "confirma", matching=0.97, waiting_time=10000):
         self.not_found("confirma")

@@ -48,9 +48,12 @@ def Acessar_benner(self):
         
 def logar_benner(self):
         bot = DesktopBot()
-        time.sleep(15)
-        if not self.find( "usuario_benner", matching=0.97, waiting_time=10000):
-            self.not_found("usuario_benner")
+
+        if not self.find( "Usuario benner", matching=0.97, waiting_time=10000):
+            self.not_found("Usuario benner")
+        self.click_relative(53, 17)
+        
+
         self.click()
         
         bot.paste(config("LOGIN_BENNER"))
@@ -58,7 +61,7 @@ def logar_benner(self):
         bot.paste(config('SENHA_BENNER'))
         bot.enter()
 
-def cria_coleta(self):
+def cria_coleta_e_copia_cancela(self):
     bot = DesktopBot()
     time.sleep(5)
     if not self.find( "adicionar_coleta", matching=0.97, waiting_time=10000):
@@ -69,7 +72,7 @@ def cria_coleta(self):
     if not self.find( "Servico", matching=0.97, waiting_time=10000):
         self.not_found("Servico")
     self.click()
-
+#
     bot.paste("Coleta")
     bot.enter()
     
@@ -77,10 +80,10 @@ def cria_coleta(self):
     if not self.find( "remetente", matching=0.97, waiting_time=10000):
         self.not_found("remetente")
     self.click_relative(17, 25)
-
+#
     bot.paste("94.389.400/0001-84")
     bot.enter()
-
+#
     if not self.find( "tomador", matching=0.97, waiting_time=10000):
         self.not_found("tomador")
     self.click_relative(18, 24)
@@ -109,8 +112,55 @@ def cria_coleta(self):
     
     if not self.find( "confirma", matching=0.97, waiting_time=10000):
         self.not_found("confirma")
-    self.click()
-    print('Coleta Gerada')
+    self.click_relative(30, 10)
+    
+    if not self.find( "ok_coleta", matching=0.97, waiting_time=10000):
+        self.not_found("ok_coleta")
+    self.click_relative(19, 14)
+    
+    bot.enter()
+    time.sleep(2)
+    bot.enter()
+    
+    if not self.find( "funcao", matching=0.97, waiting_time=10000):
+        self.not_found("funcao")
+    self.click_relative(22, 14)
+    
+    if not self.find_text( "criar_copia", threshold=230, waiting_time=10000):
+        self.not_found("criar_copia")
+    
+    if not self.find( "confirma_copia", matching=0.97, waiting_time=10000):
+        self.not_found("confirma_copia")
+    self.click_relative(152, 32)
+    
+    bot.enter()
+    time.sleep(2)
+
+    if not self.find( "cancelado", matching=0.97, waiting_time=10000):
+        self.not_found("cancelado")
+    self.click_relative(22, 15)
+    
+    bot.tab()
+    time.sleep(1)
+    bot.tab()
+    time.sleep(1)
+    bot.tab()
+    
+    bot.paste('ERRO DIGITAÇÃO')
+    
+    bot.tab()
+    
+    bot.paste('ERRO DIGITAÇÃO')
+    
+    if not self.find( "confirmar_cancelamento", matching=0.97, waiting_time=10000):
+        self.not_found("confirmar_cancelamento")
+    self.click_relative(11, 10)
+
+    if not self.find( "volta", matching=0.97, waiting_time=10000):
+        self.not_found("volta")
+    self.click_relative(11, 12)
+    
+    
     
 def cria_viagem(self):
     bot = DesktopBot()
@@ -176,9 +226,7 @@ def cria_viagem(self):
     bot.paste(motorista)
 
     time.sleep(2)
-    if not self.find( "confirma", matching=0.97, waiting_time=10000):
-        self.not_found("confirma")
-    self.click()
+
     
 
 
@@ -186,7 +234,7 @@ class Bot(DesktopBot):
     def action(self, execution=None):
         #Acessar_benner(self)
         #logar_benner(self)
-        cria_coleta(self)
+        cria_coleta_e_copia_cancela(self)
         #cria_viagem(self)
  
         pass
@@ -198,6 +246,10 @@ class Bot(DesktopBot):
 
 if __name__ == '__main__':
     Bot.main()
+
+
+
+
 
 
 

@@ -160,8 +160,6 @@ def cria_coleta_e_copia_cancela(self):
         self.not_found("volta")
     self.click_relative(11, 12)
     
-    
-    
 def cria_viagem(self):
     bot = DesktopBot()
     motorista ='319.349.458-54'
@@ -227,16 +225,98 @@ def cria_viagem(self):
 
     time.sleep(2)
 
+def pesquisa_coleta(self):
+    bot = DesktopBot()
+    if not self.find( "coleta", matching=0.97, waiting_time=10000):
+        self.not_found("coleta")
+    self.click()
+    time.sleep(1)
+    bot.key_f3()
+    bot.enter()
+    time.sleep(5)
+    bot.key_esc()
+    time.sleep(1)
+    bot.key_esc()
+    time.sleep(1)
+    bot.key_esc()
+    
+def inserir_ocorrencia_coleta_estorna(self):
+    dataatual =datetime.today()
+    data_anterior = dataatual - timedelta(days=90)
+    bot = DesktopBot()
+    if not self.find( "coleta", matching=0.97, waiting_time=10000):
+        self.not_found("coleta")
+    self.click()
+    time.sleep(1)
+    if not self.find_text( "periodo", threshold=230, waiting_time=10000):
+        self.not_found("periodo")
+    self.click_relative(11, 24)
+
+    bot.paste(data_anterior.strftime('%d/%m/%Y'))
+
+    
+    if not self.find_text( "status", threshold=230, waiting_time=10000):
+        self.not_found("status")
+    self.click_relative(13, 24)
+
+    bot.paste("Aguardando Descarregamento")
+    time.sleep(1)
+    bot.enter()
+    bot.type_right()
+    bot.enter()
+    bot.key_f3()
+
+    time.sleep(3)
+
+    bot.enter()
+
+    time.sleep(5)
+
+    if not self.find( "clips", matching=0.97, waiting_time=10000):
+        self.not_found("clips")
+    self.click()
+    
+    if not self.find( "inserir", matching=0.97, waiting_time=10000):
+        self.not_found("inserir")
+    self.click()
+
+    time.sleep(3)
+    bot.paste('Carga Não pronta')
+    bot.enter()
+    time.sleep(1)
+
+    if not self.find_text( "observaçao", threshold=230, waiting_time=10000):
+        self.not_found("observaçao")
+    self.click_relative(8, 25)
+    
+    bot.paste('Ocorrencia inserida pelo bot')
+    
+    if not self.find( "confirmar", matching=0.97, waiting_time=10000):
+        self.not_found("confirmar")
+    self.click()
+    
+    bot.key_esc()
+    time.sleep(1)
+    
+    if not self.find( "estorno", matching=0.97, waiting_time=10000):
+        self.not_found("estorno")
+    self.click()
+    time.sleep(1)
+    bot.enter()
     
 
+    
+    
+    
 
 class Bot(DesktopBot):
     def action(self, execution=None):
         #Acessar_benner(self)
         #logar_benner(self)
-        cria_coleta_e_copia_cancela(self)
+        #cria_coleta_e_copia_cancela(self)
         #cria_viagem(self)
- 
+        #pesquisa_coleta(self)
+        #inserir_ocorrencia_coleta_estorna(self)
         pass
         
 
@@ -246,6 +326,8 @@ class Bot(DesktopBot):
 
 if __name__ == '__main__':
     Bot.main()
+
+
 
 
 

@@ -1,9 +1,48 @@
 
 from botcity.core import DesktopBot
 from decouple import config
-from datetime import datetime,timedelta,date
+from datetime import datetime,timedelta
+import re
 import time
+import cv2
+import pytesseract
 
+
+class TextExtractor:
+    def get_text(self, regex_pattern):
+
+        bot = DesktopBot()
+        
+        # 1. Capturar a região da tela
+        screen_cut = bot.screen_cut(x=430, y=270, width=800, height=300)
+        screen_cut.save('screenshot.png')
+        
+        # 2. Ler a imagem
+        imagem = cv2.imread('screenshot.png')
+        
+        # 3. Configurar o caminho do Tesseract (ajuste conforme necessário)
+        pytesseract.pytesseract.tesseract_cmd = r'C:\Users\vitorgomes\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
+        
+        # 4. Extrair o texto da imagem
+        text = pytesseract.image_to_string(imagem, lang="por")
+        
+        # 5. Aplicar o regex para filtrar o texto
+        matches = re.findall(regex_pattern, text)
+        
+        # 6. Retornar as correspondências
+        return matches
+
+
+def obter_coleta(self):
+    extractor = TextExtractor()
+    texto_filtrado = extractor.get_text(regex_pattern=r"(s*(\d{4}/\d{5}-\d{4}))")
+
+    if texto_filtrado:
+        texto_filtrado[0]
+    else:
+        return 'Nao foi Encontrato Coleta'
+    
+    return texto_filtrado[0]
 
 def Acessar_benner(self):
     bot = DesktopBot()
@@ -72,7 +111,7 @@ def cria_coleta_e_copia_cancela(self):
     if not self.find( "Servico", matching=0.97, waiting_time=10000):
         self.not_found("Servico")
     self.click()
-#
+
     bot.paste("Coleta")
     bot.enter()
     
@@ -80,10 +119,10 @@ def cria_coleta_e_copia_cancela(self):
     if not self.find( "remetente", matching=0.97, waiting_time=10000):
         self.not_found("remetente")
     self.click_relative(17, 25)
-#
+
     bot.paste("94.389.400/0001-84")
     bot.enter()
-#
+
     if not self.find( "tomador", matching=0.97, waiting_time=10000):
         self.not_found("tomador")
     self.click_relative(18, 24)
@@ -117,9 +156,10 @@ def cria_coleta_e_copia_cancela(self):
     if not self.find( "ok_coleta", matching=0.97, waiting_time=10000):
         self.not_found("ok_coleta")
     self.click_relative(19, 14)
-    
+
     bot.enter()
     time.sleep(2)
+    obter_coleta(self)
     bot.enter()
     
     if not self.find( "funcao", matching=0.97, waiting_time=10000):
@@ -303,11 +343,7 @@ def inserir_ocorrencia_coleta_estorna(self):
     self.click()
     time.sleep(1)
     bot.enter()
-    
 
-    
-    
-    
 
 class Bot(DesktopBot):
     def action(self, execution=None):
@@ -317,6 +353,8 @@ class Bot(DesktopBot):
         #cria_viagem(self)
         #pesquisa_coleta(self)
         #inserir_ocorrencia_coleta_estorna(self)
+
+
         pass
         
 
